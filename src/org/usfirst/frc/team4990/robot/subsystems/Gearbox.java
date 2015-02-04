@@ -23,7 +23,7 @@ public class Gearbox {
 		
 		this.robotSide = robotSide;
 		
-		this.encoder = new Encoder(encoderChannelA, encoderChannelB, robotSide == RobotSide.Right, Encoder.EncodingType.k2X);
+		this.encoder = new Encoder(encoderChannelA, encoderChannelB, this.robotSide == RobotSide.Right, Encoder.EncodingType.k2X);
 		//TODO: implement gear ratio math to find out how far the wheel travels per pulse
 		
 		this.encoder.setDistancePerPulse(Constants.feetPerWheelRevolution / Constants.pulsesPerRevolution);
@@ -40,9 +40,6 @@ public class Gearbox {
 	 * returned in ft
 	 */
 	public double getDistanceTraveled() {
-		//System.out.println("encoder distance traveled:" + this.encoder.getDistance());
-		//System.out.println(this.robotSide + " encoder velocity:" + this.encoder.getRate());
-		//System.out.println("encoder raw count:" + this.encoder.getRaw());
 		return this.encoder.getDistance();
 	}
 	

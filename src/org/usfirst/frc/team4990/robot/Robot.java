@@ -75,16 +75,6 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    	/*boolean pressed = this.gamepad.getAButtonPressed();
-    	
-    	if (pressed) {
-    		this.driveTrain.setSpeed(0.1, 0.1);
-    	} else {
-    		this.driveTrain.setSpeed(0.0, 0.0);
-    	}
-    	
-    	this.driveTrain.update();
-    	this.logger.profileDriveTrain(this.driveTrain);*/
     	double change = 0;
     	switch (stage) {
     	case 0:
