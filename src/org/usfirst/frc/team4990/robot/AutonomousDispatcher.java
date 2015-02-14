@@ -13,8 +13,8 @@ public class AutonomousDispatcher {
 		this.currentActions = new HashMap<String, Action>();
 	}
 	
-	public deserializeJSONString(String array) {
+	public String deserializeJSONString(String array) {
 		Gson gson = new Gson();
-		return gson.fromJson(array);
+		return gson.fromJson(array, String.class);
 	}
 }
