@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4990.robot.actions;
 
 import java.util.List;
-import java.org.json.JSONObject;
+//import java.org.json.JSONObject;
 
 import org.usfirst.frc.team4990.robot.lib.MotionProfile;
 
@@ -18,9 +18,9 @@ public class DriveAction extends Action {
 		this.motionProfile = new MotionProfile(distanceToTravel, velocity, acceleration);
 	}
 	
-	public MotionProfile.ProfileValues next() {
+	/*public MotionProfile.ProfileValues next() {
 		if (!this.actionStarted) {
 			this.actionStarted = true;
 		}
-	}
+	}*/
 }

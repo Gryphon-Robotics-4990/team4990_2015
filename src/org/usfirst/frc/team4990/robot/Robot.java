@@ -43,6 +43,9 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(2),
     		new TalonMotorController(3),
     		0, 1, 2, 3);
+    	
+    	//hey! for testing!
+    	System.out.println(Reader.read("/home/lvuser/logs/wizardsnstuff.txt"));
     }
 
     public void autonomousInit() {
