@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Preferences;
 import org.usfirst.frc.team4990.robot.controllers.AutoDriveTrainController;
 import org.usfirst.frc.team4990.robot.controllers.TeleopDriveTrainController;
 import org.usfirst.frc.team4990.robot.controllers.TeleopForkliftController;
-import org.usfirst.frc.team4990.robot.lib.MotionProfile;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 import org.usfirst.frc.team4990.robot.subsystems.Forklift;
@@ -23,7 +22,7 @@ import org.usfirst.frc.team4990.robot.subsystems.motors.TalonSRXMotorController;
  */
 public class Robot extends IterativeRobot {
 	Preferences prefs;
-	//private Logger logger;
+	private Logger logger;
 	
 	private F310Gamepad driveGamepad;
 	private DriveTrain driveTrain;
@@ -43,10 +42,10 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	this.prefs = Preferences.getInstance();
-    	/*this.logger = new Logger(
+    	this.logger = new Logger(
     			
     			//prefs for logger
-    			"/home/lvuser/logs/log.txt");*/
+    			"/home/lvuser/logs/log.txt");
     	
     	this.driveGamepad = new F310Gamepad(1);
     	this.forkliftJoystick = new Joystick(2);
@@ -131,6 +130,6 @@ public class Robot extends IterativeRobot {
     	this.driveTrain.update();
         this.forklift.update();
         
-        //this.logger.profileDriveTrain(this.driveTrain);
+        this.logger.profileDriveTrain(this.driveTrain);
     }
 }

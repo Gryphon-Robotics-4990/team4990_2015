@@ -3,6 +3,7 @@ package org.usfirst.frc.team4990.robot.controllers;
 import org.usfirst.frc.team4990.robot.Constants;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.*;
 
@@ -121,6 +122,7 @@ public class TeleopDriveTrainController {
 	}
 	
 	public double scaleBackFasterVel(double fasterVel, double dV, double goalDV) {
+		SmartDashboard.putNumber("dV", dV);
 		double currError = Math.abs(dV) - goalDV;
 		
 		long deltaTime = (new Date()).getTime() - this.lastUpdate.getTime();

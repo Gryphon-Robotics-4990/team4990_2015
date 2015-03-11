@@ -4,6 +4,8 @@ import java.io.*;
 import java.text.*;
 import java.util.Scanner;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 //testing 1st commit now.
@@ -17,13 +19,19 @@ public class Logger {
 	}
 	
 	public void profileDriveTrain(DriveTrain driveTrain) {
+		SmartDashboard.putNumber("left set speed", driveTrain.getLeftSetSpeed());
+		SmartDashboard.putNumber("right set speed", driveTrain.getRightSetSpeed());
+		SmartDashboard.putNumber("right velocity", driveTrain.getLeftVelocity());
+		SmartDashboard.putNumber("left velocity", driveTrain.getRightVelocity());
 		//runs write method and prints the values we want
-		write(path, "Left Speed", String.valueOf(driveTrain.getLeftSetSpeed()));
+		/*write(path, "Left Speed", String.valueOf(driveTrain.getLeftSetSpeed()));
 		write(path, "Right Speed", String.valueOf(driveTrain.getRightSetSpeed()));
 		write(path, "Left Velocity", String.valueOf(driveTrain.getLeftVelocity()));
 		write(path, "Right Velocity", String.valueOf(driveTrain.getRightVelocity()));
 		write(path, "Left Distance", String.valueOf(driveTrain.getLeftDistanceTraveled()));
 		write(path, "Right Distance", String.valueOf(driveTrain.getRightDistanceTraveled()));
+		*/
+		
 		
 	}
 	

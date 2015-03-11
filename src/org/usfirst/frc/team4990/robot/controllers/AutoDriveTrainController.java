@@ -2,8 +2,6 @@ package org.usfirst.frc.team4990.robot.controllers;
 
 import java.util.Date;
 
-import org.usfirst.frc.team4990.robot.lib.MotionProfile;
-import org.usfirst.frc.team4990.robot.lib.PositionPIDLoop;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 
 public class AutoDriveTrainController {
