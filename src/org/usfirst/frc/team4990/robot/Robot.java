@@ -49,10 +49,10 @@ public class Robot extends IterativeRobot {
     	this.forkliftJoystick = new Joystick(2);
     	
     	this.driveTrain = new DriveTrain( 
-    		new TalonSRXMotorController(0),
-    		new TalonSRXMotorController(1),
-    		new TalonSRXMotorController(2),
-    		new TalonSRXMotorController(3),
+    		new TalonMotorController(0),
+    		new TalonMotorController(1),
+    		new TalonMotorController(2),
+    		new TalonMotorController(3),
     		0, 1, 2, 3);
 
     	this.forklift = new Forklift(

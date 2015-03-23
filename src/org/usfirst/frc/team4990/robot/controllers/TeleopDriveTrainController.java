@@ -7,51 +7,37 @@ import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 import java.util.*;
 
 public class TeleopDriveTrainController {
-	private F310Gamepad gamepad;
+	private Joystick controller;
 	private DriveTrain driveTrain;
-	
-	private double lastThrottle = 0;
-	private double lastTurnSteepness = 0;
-	
-	private Date lastUpdate;
 	
 	private boolean lastDpiToggleInput = false;
 	private double currentThrottleMultiplier;
 	
-	private final double maxTurnRadius;
 	private final boolean reverseTurningFlipped;
-	private final double accelerationTime;
-	private final double lowThrottleMultiplier;
+	private final double lowThrottle;
 	private final double maxThrottle;
 	
 	public TeleopDriveTrainController(
-			F310Gamepad gamepad, 
+			Joystick controller, 
 			DriveTrain driveTrain, 
-			double maxTurnRadius, 
 			boolean reverseTurningFlipped,
-			double accelerationTime,
-			double lowThrottleMultiplier,
+			double lowThrottle,
 			double maxThrottle) {
-		this.gamepad = gamepad;
+		this.controller = controller;
 		this.driveTrain = driveTrain;
 		
-		this.lastUpdate = new Date();
-		
 		this.currentThrottleMultiplier = maxThrottle;
-		
-		this.maxTurnRadius = maxTurnRadius;
 		this.reverseTurningFlipped = reverseTurningFlipped;
-		this.accelerationTime = accelerationTime;
-		this.lowThrottleMultiplier = lowThrottleMultiplier;
+		this.lowThrottle = lowThrottle;
 		this.maxThrottle = maxThrottle;
 	}
 	
 	public void updateDriveTrainState() {
-		boolean dpiTogglePressed = this.gamepad.getRightBumperPressed();
+		boolean dpiTogglePressed = this.controller.getRawButton(2);
 		
 		if (dpiTogglePressed && !this.lastDpiToggleInput) {
 			if (this.currentThrottleMultiplier == this.maxThrottle) {
-				this.currentThrottleMultiplier = this.lowThrottleMultiplier;
+				this.currentThrottleMultiplier = this.lowThrottle;
 			} else {
 				this.currentThrottleMultiplier = this.maxThrottle;
 			}
@@ -59,64 +45,15 @@ public class TeleopDriveTrainController {
 		
 		this.lastDpiToggleInput = dpiTogglePressed;
 		
-		double throttleInput = this.gamepad.getLeftJoystickY();
-		double turnSteepnessInput = this.gamepad.getRightJoystickX();
+		double throttleInput = -this.controller.getY();
+		double turnSteepnessInput = this.controller.getX();
 		
-		Date currentUpdate = new Date();
+		double throttle = throttleInput * this.currentThrottleMultiplier;
+		double turnSteepness = turnSteepnessInput;
 		
-		double throttle = getNextThrottle(
-				throttleInput * this.currentThrottleMultiplier, 
-				this.lastThrottle, 
-				this.lastUpdate, 
-				currentUpdate, 
-				this.accelerationTime);
-		
-		double turnSteepness = getNextThrottle(
-				turnSteepnessInput * this.currentThrottleMultiplier,
-				this.lastTurnSteepness,
-				this.lastUpdate,
-				currentUpdate,
-				this.accelerationTime);
-		
-		if (throttle != 0 && turnSteepnessInput != 0) {
-			setArcTrajectory(throttle, turnSteepnessInput);
-		} else if (throttle != 0 && turnSteepnessInput == 0) { 
-			setStraightTrajectory(throttle);
-		} else if (throttle == 0 && turnSteepness != 0) {
-			setTurnInPlaceTrajectory(turnSteepness);
-		} else {
-			this.driveTrain.setSpeed(0.0, 0.0);
-		}
-		
-		this.lastThrottle = throttle;
-		this.lastTurnSteepness = turnSteepness;
-		this.lastUpdate = currentUpdate;
-	}
-	
-	public double getNextThrottle(double throttleInput, double lastThrottle, Date lastUpdate, Date currentUpdate, double accelerationTime) {
-		double newThrottle = throttleInput;
-		
-		if (accelerationTime != 0) {
-			double acceleration = (throttleInput - lastThrottle) / accelerationTime;
-			double deltaTime = currentUpdate.getTime() - lastUpdate.getTime();
-			
-			double deltaThrottle = deltaTime * acceleration;
-			
-			newThrottle = lastThrottle + deltaThrottle;
-		}
-		
-		return Math.abs(newThrottle) < Constants.zeroThrottleThreshold ? 0.0 : newThrottle;
-	}
-	
-	public void setArcTrajectory(double throttle, double turnSteepness) {
 		double leftWheelSpeed = throttle;
 		double rightWheelSpeed = calculateInsideWheelSpeed(throttle, turnSteepness);
 		
-		/* the robot should turn to the left, so left wheel is on the inside
-		 * of the turn, and the right wheel is on the outside of the turn
-		 */
-		
-		//goes forward and also runs this if reverse turning disabled
 		if ((this.reverseTurningFlipped && throttle < 0 && turnSteepness > 0) || 
 			(!this.reverseTurningFlipped && throttle < 0 && turnSteepness < 0) || 
 			(throttle > 0 && turnSteepness < 0)) {
@@ -125,26 +62,10 @@ public class TeleopDriveTrainController {
 			
 		}
 		
-		System.out.println(leftWheelSpeed + "; " + rightWheelSpeed);
-		
 		this.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
 	
-	private double calculateInsideWheelSpeed(double outsideWheelSpeed, double turnSteepness) {
-		double turnRadius = this.maxTurnRadius - (turnSteepness * this.maxTurnRadius);
-		
-		return outsideWheelSpeed * (turnRadius / (turnRadius + Constants.robotWidth));
-	}
-	
-	public void setStraightTrajectory(double throttle) {
-		/* both motors should spin forward. */
-		this.driveTrain.setSpeed(throttle, throttle);
-	}
-	
-	public void setTurnInPlaceTrajectory(double turningSpeed) {
-		/* the right motor's velocity has the opposite sign of the the left motor's
-		 * since the right motor will spin in the opposite direction from the left
-		 */
-		this.driveTrain.setSpeed(turningSpeed, -turningSpeed);
+	public double calculateInsideWheelSpeed(double throttle, double turnSteepness) {
+		return throttle * (1 - turnSteepness);
 	}
 }
