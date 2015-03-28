@@ -25,7 +25,7 @@ public class Robot extends IterativeRobot {
 	Preferences prefs;
 	private Logger logger;
 	
-	private F310Gamepad driveGamepad;
+	private Joystick driveJoystick;
 	private DriveTrain driveTrain;
 	
 	private Joystick forkliftJoystick;
@@ -45,8 +45,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
     	this.logger = new Logger();
     	
-    	this.driveGamepad = new F310Gamepad(1);
-    	this.forkliftJoystick = new Joystick(2);
+    	this.driveJoystick = new Joystick(0);
+    	this.forkliftJoystick = new Joystick(1);
     	
     	this.driveTrain = new DriveTrain( 
     		new TalonMotorController(0),
@@ -89,11 +89,9 @@ public class Robot extends IterativeRobot {
     
     public void teleopInit() {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		this.driveGamepad, 
-        		this.driveTrain, 
-        		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
+        		this.driveJoystick, 
+        		this.driveTrain,
         		this.prefs.getBoolean("reverseTurningFlipped", true),
-        		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
         		this.prefs.getDouble("lowThrottleMultiplier", .25),
         		this.prefs.getDouble("maxThrottle", 1.0));
     	

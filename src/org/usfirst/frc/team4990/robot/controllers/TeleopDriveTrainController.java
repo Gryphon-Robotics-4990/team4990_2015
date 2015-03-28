@@ -4,6 +4,8 @@ import org.usfirst.frc.team4990.robot.Constants;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 import java.util.*;
 
 public class TeleopDriveTrainController {
