@@ -40,21 +40,21 @@ public class TeleopDriveTrainController {
 			this.currentThrottleMultiplier = this.lowThrottle;
 		}
 		
-		double xInput = -this.controller.getY();
-		double yInput = this.controller.getX();
+		double yInput = -this.controller.getY();
+		double xInput = this.controller.getX();
 		
-		double leftWheelSpeed = xInput + yInput;
-		double rightWheelSpeed = xInput - yInput;
+		double leftWheelSpeed = yInput + xInput;
+		double rightWheelSpeed = yInput - xInput;
 		
-		if ((this.reverseTurningFlipped && xInput < 0 && yInput > 0) || 
-			(!this.reverseTurningFlipped && xInput < 0 && yInput < 0) || 
-			(xInput > 0 && yInput < 0)) {
-			leftWheelSpeed = xInput - yInput;
-			rightWheelSpeed = xInput + yInput;
+		if ((this.reverseTurningFlipped && yInput < 0 && xInput > 0) || 
+			(!this.reverseTurningFlipped && yInput < 0 && xInput < 0) || 
+			(yInput > 0 && xInput < 0)) {
+			leftWheelSpeed = yInput - xInput;
+			rightWheelSpeed = yInput + xInput;
 		}
 		
-		xInput *= this.currentThrottleMultiplier;
 		yInput *= this.currentThrottleMultiplier;
+		xInput *= this.currentThrottleMultiplier;
 		
 		this.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
 	}
