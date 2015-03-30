@@ -45,8 +45,8 @@ public class Robot extends IterativeRobot {
     	this.prefs = Preferences.getInstance();
     	this.logger = new Logger();
     	
-    	this.driveJoystick = new Joystick(0);
-    	this.forkliftJoystick = new Joystick(1);
+    	this.driveJoystick = new Joystick(this.prefs.getInt("driveJoystickPort", 0));
+    	this.forkliftJoystick = new Joystick(this.prefs.getInt("forkliftJoystickPort", 1));
     	
     	this.driveTrain = new DriveTrain( 
     		new TalonMotorController(0),

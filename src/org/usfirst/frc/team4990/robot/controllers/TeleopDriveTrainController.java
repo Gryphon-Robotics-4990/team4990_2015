@@ -12,7 +12,6 @@ public class TeleopDriveTrainController {
 	private Joystick controller;
 	private DriveTrain driveTrain;
 	
-	private boolean lastDpiToggleInput = false;
 	private double currentThrottleMultiplier;
 	
 	private final boolean reverseTurningFlipped;
@@ -35,39 +34,28 @@ public class TeleopDriveTrainController {
 	}
 	
 	public void updateDriveTrainState() {
-		boolean dpiTogglePressed = this.controller.getRawButton(2);
-		
-		if (dpiTogglePressed && !this.lastDpiToggleInput) {
-			if (this.currentThrottleMultiplier == this.maxThrottle) {
-				this.currentThrottleMultiplier = this.lowThrottle;
-			} else {
-				this.currentThrottleMultiplier = this.maxThrottle;
-			}
+		if (this.controller.getRawButton(3)) {
+			this.currentThrottleMultiplier = this.maxThrottle;
+		} else if (this.controller.getRawButton(2)) {
+			this.currentThrottleMultiplier = this.lowThrottle;
 		}
 		
-		this.lastDpiToggleInput = dpiTogglePressed;
+		double xInput = -this.controller.getY();
+		double yInput = this.controller.getX();
 		
-		double throttleInput = -this.controller.getY();
-		double turnSteepnessInput = this.controller.getX();
+		double leftWheelSpeed = xInput + yInput;
+		double rightWheelSpeed = xInput - yInput;
 		
-		double throttle = throttleInput * this.currentThrottleMultiplier;
-		double turnSteepness = turnSteepnessInput;
-		
-		double leftWheelSpeed = throttle;
-		double rightWheelSpeed = calculateInsideWheelSpeed(throttle, turnSteepness);
-		
-		if ((this.reverseTurningFlipped && throttle < 0 && turnSteepness > 0) || 
-			(!this.reverseTurningFlipped && throttle < 0 && turnSteepness < 0) || 
-			(throttle > 0 && turnSteepness < 0)) {
-			leftWheelSpeed = calculateInsideWheelSpeed(throttle, turnSteepness);
-			rightWheelSpeed = throttle;
-			
+		if ((this.reverseTurningFlipped && xInput < 0 && yInput > 0) || 
+			(!this.reverseTurningFlipped && xInput < 0 && yInput < 0) || 
+			(xInput > 0 && yInput < 0)) {
+			leftWheelSpeed = xInput - yInput;
+			rightWheelSpeed = xInput + yInput;
 		}
+		
+		xInput *= this.currentThrottleMultiplier;
+		yInput *= this.currentThrottleMultiplier;
 		
 		this.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
-	}
-	
-	public double calculateInsideWheelSpeed(double throttle, double turnSteepness) {
-		return throttle * (1 - turnSteepness);
 	}
 }
