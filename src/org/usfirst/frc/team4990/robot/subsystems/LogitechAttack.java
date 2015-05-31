@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4990.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
 
-//
-public class F310Gamepad extends Joystick {
-	public F310Gamepad(int joystickNumber) {
+public class LogitechAttack extends F310Gamepad {
+	public LogitechAttack(int joystickNumber) {
 		super(joystickNumber);
 	}
 	
@@ -14,7 +12,7 @@ public class F310Gamepad extends Joystick {
 	 */
 	
 	public double getLeftJoystickX() {
-		return this.getRawAxis(0);
+		return 0; //this.getRawAxis(0);
 	}
 	
 	public double getLeftJoystickY() {
@@ -30,7 +28,7 @@ public class F310Gamepad extends Joystick {
 		* 0.0078125 read as rawInput (not 0 as expected) when the 
 		* left joystick is in its resting position
 		*/
-		if (rawInput > 0 && rawInput <= 0.0078125) {
+		if (rawInput > 0 && rawInput <= 0.0234375) {
 			return 0;
 		}
 		
@@ -44,8 +42,8 @@ public class F310Gamepad extends Joystick {
 	
 	public double getRightJoystickX() {
 		
-		double rightRawAxis = this.getRawAxis(4);
-		if (rightRawAxis < 0 && rightRawAxis >= 0.0391) {
+		double rightRawAxis = this.getRawAxis(0);
+		if (rightRawAxis < 0 && rightRawAxis >=  0.0) {
 			return 0;
 		}
 		return rightRawAxis;

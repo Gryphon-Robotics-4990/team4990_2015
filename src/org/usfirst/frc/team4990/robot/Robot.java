@@ -11,6 +11,7 @@ import org.usfirst.frc.team4990.robot.lib.MotionProfile;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
 import org.usfirst.frc.team4990.robot.subsystems.Forklift;
+import org.usfirst.frc.team4990.robot.subsystems.LogitechAttack;
 import org.usfirst.frc.team4990.robot.subsystems.motors.TalonMotorController;
 import org.usfirst.frc.team4990.robot.subsystems.motors.TalonSRXMotorController;
 
@@ -25,7 +26,7 @@ public class Robot extends IterativeRobot {
 	Preferences prefs;
 	private Logger logger;
 	
-	private F310Gamepad driveGamepad;
+	private LogitechAttack logitechAttack;
 	private DriveTrain driveTrain;
 	
 	private Joystick forkliftJoystick;
@@ -42,11 +43,11 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	System.out.println("Version 1.3.20.9.03");
+    	System.out.println("Version 1.5.31.2.48");
     	this.prefs = Preferences.getInstance();
     	this.logger = new Logger();
     	
-    	this.driveGamepad = new F310Gamepad(this.prefs.getInt("driveGamepadPort",1));
+    	this.logitechAttack = new LogitechAttack(this.prefs.getInt("driveGamepadPort", 2));
     	this.forkliftJoystick = new Joystick(this.prefs.getInt("forkliftJoystickPort",0));
     	
     	this.driveTrain = new DriveTrain( 
@@ -88,13 +89,13 @@ public class Robot extends IterativeRobot {
     
     public void teleopInit() {
     	this.teleopDriveTrainController = new TeleopDriveTrainController(
-        		this.driveGamepad, 
+        		this.logitechAttack, 
         		this.driveTrain, 
         		this.prefs.getDouble("maxTurnRadius", Constants.defaultMaxTurnRadius),
         		this.prefs.getBoolean("reverseTurningFlipped", true),
         		this.prefs.getDouble("smoothDriveAccTime", Constants.defaultAccelerationTime),
         		this.prefs.getDouble("lowThrottleMultiplier", .25),
-        		this.prefs.getDouble("maxThrottle", 1.0));
+        		this.prefs.getDouble("maxThrottle", 0.25));
     	
     	this.teleopForkliftController = new TeleopForkliftController(
     			this.forkliftJoystick, 
