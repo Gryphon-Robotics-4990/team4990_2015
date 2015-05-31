@@ -8,28 +8,20 @@ import java.util.Date;
 public class FileLogger {
 
 	private File log;
-	PrintWriter pw;
 	
 	FileLogger(String filePath)
 	{
-		this.log = new File(filePath);
-		if(!this.log.isFile() )
+		log = new File(filePath);
+		if(!log.isFile() )
 		{
 			try {
-				this.log.getParentFile().mkdirs();
-				this.log.createNewFile();
+				log.getParentFile().mkdirs();
+				log.createNewFile();
 			} catch (Exception e) {
 				
 				e.printStackTrace();
 			}
 			
-		}
-		try {
-			this.pw = new PrintWriter(
-					new BufferedWriter(
-							new FileWriter(log) ), true);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 			
 	}
@@ -40,7 +32,15 @@ public class FileLogger {
 		Date date = new Date();
 		
 		try {
-			this.pw.println(df.format(date) + "      "  + text);
+			PrintWriter pw = new PrintWriter(
+							 new BufferedWriter(
+							 new FileWriter(log, true)), true);
+			
+			
+			
+			pw.println(df.format(date) + " "  + text);
+		
+			pw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
