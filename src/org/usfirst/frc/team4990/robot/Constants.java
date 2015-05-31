@@ -18,7 +18,7 @@ public class Constants {
 	 * units: feet
 	 */
 	
-	public static final double defaultAccelerationTime = 250;
+	public static final double defaultAccelerationTime = 500;
 	
 	//TODO: figure out actual pulses per revolution and stop compensating by a factor of 2
 	public static final int pulsesPerRevolution = 250;

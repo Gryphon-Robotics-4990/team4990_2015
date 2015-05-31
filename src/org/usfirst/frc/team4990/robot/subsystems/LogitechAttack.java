@@ -43,10 +43,10 @@ public class LogitechAttack extends F310Gamepad {
 	public double getRightJoystickX() {
 		
 		double rightRawAxis = this.getRawAxis(0);
-		if (rightRawAxis < 0 && rightRawAxis >=  0.0) {
+		if (rightRawAxis < 0 && rightRawAxis >=  0.007874015748031496) {
 			return 0;
 		}
-		return rightRawAxis;
+		return rightRawAxis * 0.9;
 	}
 	
 	public double getRightJoystickY() {

@@ -1,5 +1,8 @@
 package org.usfirst.frc.team4990.robot.controllers;
 
+import java.lang.Math;
+
+
 import org.usfirst.frc.team4990.robot.Constants;
 import org.usfirst.frc.team4990.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4990.robot.subsystems.F310Gamepad;
@@ -86,9 +89,11 @@ public class TeleopDriveTrainController {
 		System.out.println("throttle:" + throttle);
 		System.out.println("turnSteepness" + turnSteepness);
 		
-		if (throttle != 0 && turnSteepnessInput != 0) {
+		double STRAIGHTDEADZONE = 0.1;
+		
+		if (throttle != 0 && Math.abs(turnSteepnessInput) > STRAIGHTDEADZONE) {
 			setArcTrajectory(throttle, turnSteepnessInput);
-		} else if (throttle != 0 && turnSteepnessInput == 0) { 
+		} else if (throttle != 0 && Math.abs(turnSteepnessInput) <= STRAIGHTDEADZONE) { 
 			setStraightTrajectory(throttle);
 		} else if (throttle == 0 && turnSteepness != 0) {
 			setTurnInPlaceTrajectory(turnSteepness);
