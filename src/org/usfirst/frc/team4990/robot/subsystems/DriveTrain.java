@@ -9,11 +9,15 @@ public class DriveTrain {
 	private Gearbox rightGearbox;
 	private double rightSetSpeed;
 	
+	private final double rightCompensationFactor;
+	
 	public DriveTrain(Motor leftMotor1, Motor leftMotor2, Motor rightMotor1, Motor rightMotor2,
 						int leftEncoderChannelA, int leftEncoderChannelB, 
-						int rightEncoderChannelA, int rightEncoderChannelB) {
+						int rightEncoderChannelA, int rightEncoderChannelB, double rightCompensationFactor) {
 		this.leftGearbox = new Gearbox(leftMotor1, leftMotor2, leftEncoderChannelA, leftEncoderChannelB, Gearbox.RobotSide.Left);
 		this.rightGearbox = new Gearbox(rightMotor1, rightMotor2, rightEncoderChannelA, rightEncoderChannelB, Gearbox.RobotSide.Right);
+		
+		this.rightCompensationFactor = rightCompensationFactor;
 	}
 	
 	public void setSpeed(double leftSpeed, double rightSpeed) {		
@@ -26,7 +30,7 @@ public class DriveTrain {
 	}
 	
 	public void setRightSpeed(double rightSpeed) {
-		this.rightSetSpeed = rightSpeed;
+		this.rightSetSpeed = this.rightCompensationFactor * rightSpeed;
 	}
 	
 	public void update() {

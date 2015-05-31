@@ -10,7 +10,6 @@ public class Fork {
 	}
 	
 	public void setForkState(boolean isOpen) {
-		System.out.println("state toggled!!!!!");
 		this.solenoid.set(isOpen);
 	}
 }

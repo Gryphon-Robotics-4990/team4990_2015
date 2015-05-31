@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
     		new TalonMotorController(1),
     		new TalonMotorController(2),
     		new TalonMotorController(3),
-    		0, 1, 2, 3);
+    		0, 1, 2, 3, this.prefs.getDouble("rightCompensationFactor", 1.0));
 
     	this.forklift = new Forklift(
     			new TalonMotorController(4), 
